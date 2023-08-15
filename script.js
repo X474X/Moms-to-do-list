@@ -1,17 +1,35 @@
 const task = document.querySelector(".task");
 const list = document.querySelector("ul");
 
-let taskList = [];
+let index = -1;
 
 task.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
-    taskList.push(task.value);
-    console.log(taskList);
+    index++;
     const li = document.createElement("li");
     const p = document.createElement("p");
     const div = document.createElement("div");
     const input = document.createElement("input");
     const span = document.createElement("span");
+    span.setAttribute("index", index);
+    input.setAttribute("index", index);
+
+    input.addEventListener("click", () => {
+      if (li.children[0].style.textDecoration === "") {
+        li.children[0].style.textDecoration = "line-through";
+      } else {
+        li.children[0].style.textDecoration = "";
+      }
+    });
+
+    span.addEventListener("click", () => {
+      index--;
+      list.children[Number(span.getAttribute("index"))].remove();
+      const close = document.querySelectorAll("span");
+      for (let index = 0; index < close.length; index++) {
+        close[index].setAttribute("index", index);
+      }
+    });
 
     p.innerHTML = task.value;
     span.innerHTML = "X";
@@ -25,3 +43,5 @@ task.addEventListener("keypress", (event) => {
     task.value = " ";
   }
 });
+
+//text-decoration: line-through
